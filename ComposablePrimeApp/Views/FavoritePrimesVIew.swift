@@ -9,24 +9,40 @@ import Overture
 import FavoritePrimes
 import StoreArchitecture
 
-struct FavoritePrimesView: View {
-    @ObservedObject var store: Store<[Int], AppAction>
+public struct FavoritePrimesView: View {
+    @ObservedObject var store: Store<[Int], FavoritePrimesAction>
     
-    var body: some View {
+    public init(store: Store<[Int], FavoritePrimesAction>) {
+        self.store = store
+    }
+    
+    public var body: some View {
         List {
-            ForEach(store.value, id: \.self) { prime in
+            ForEach(self.store.value, id: \.self) { prime in
                 Text("\(prime)")
             }
-            .onDelete { indexSet in store.send(.favoritePrimes(.deleteFavoritePrimes(indexSet))) }
+            .onDelete { indexSet in
+                self.store.send(.deleteFavoritePrimes(indexSet))
+            }
         }
-        .navigationBarTitle("Favorite Primes")
+        .navigationBarTitle("Favorite primes")
+        .navigationBarItems(
+            trailing: HStack {
+                Button("Save") {
+                    self.store.send(.saveFavoritePrimesButtonTapped)
+                }
+                Button("Load") {
+                    self.store.send(.loadFavoritePrimesButtonTapped)
+                }
+            }
+        )
     }
 }
 
 struct FavoritePrimesView_Previews: PreviewProvider {
     static var previews: some View {
         EmptyView()
-//        FavoritePrimesView(store: Store(value: [],
-//                                        reducer: with(appReducer, compose(logging, activityFeed))))
+        //        FavoritePrimesView(store: Store(value: [],
+        //                                        reducer: with(appReducer, compose(logging, activityFeed))))
     }
 }

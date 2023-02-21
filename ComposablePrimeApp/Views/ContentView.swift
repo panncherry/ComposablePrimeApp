@@ -6,24 +6,38 @@
 //
 import SwiftUI
 import Overture
+import Counter
 import StoreArchitecture
+
 
 struct ContentView: View {
   @ObservedObject var store: Store<AppState, AppAction>
-    
-    var body: some View {
-        NavigationView {
-            List {
-                NavigationLink(destination: CounterView(store: store.view { ($0.count, $0.favoritePrimes) })) {
-                    Text("Counter Demo")
-                }
-                NavigationLink(destination: FavoritePrimesView(store: store.view { $0.favoritePrimes })) {
-                    Text("Favorite Primes")
-                }
-            }
-            .navigationBarTitle("State Management")
-        }
+
+  var body: some View {
+    NavigationView {
+      List {
+        NavigationLink(
+          "Counter demo",
+          destination: CounterView(
+            store: self.store.view(
+              value: { $0.counterView },
+              action: { .counterView($0) }
+            )
+          )
+        )
+        NavigationLink(
+          "Favorite primes",
+          destination: FavoritePrimesView (
+            store: self.store.view(
+              value: { $0.favoritePrimes },
+              action: { .favoritePrimes($0) }
+            )
+          )
+        )
+      }
+      .navigationBarTitle("State management")
     }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {

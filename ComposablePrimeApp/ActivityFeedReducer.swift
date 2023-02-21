@@ -7,28 +7,34 @@
 
 import Combine
 import SwiftUI
+import StoreArchitecture
 
 /// ActivityFeed higher order reducer
 /// - Parameter reducer: `appReducer`
 /// - Returns:
-func activityFeed(_ reducer: @escaping (inout AppState, AppAction) -> Void) -> (inout AppState, AppAction) -> Void {
+func activityFeed(
+    _ reducer: @escaping Reducer<AppState, AppAction>
+) -> Reducer<AppState, AppAction> {
+    
     return { state, action in
         switch action {
-        case .counter(_):
+        case .counterView(.counter),
+                .favoritePrimes(.loadedFavoritePrimes),
+                .favoritePrimes(.loadFavoritePrimesButtonTapped),
+                .favoritePrimes(.saveFavoritePrimesButtonTapped):
             break
-            
-        case .primeModal(.saveFavoritePrimeTapped):
-            state.activityFeed.append(.init(timestamp: Date(), type: .addedFavoritePrime(state.count)))
-
-        case .primeModal(.removeFavoritePrimeTapped):
+        case .counterView(.primeModal(.removeFavoritePrimeTapped)):
             state.activityFeed.append(.init(timestamp: Date(), type: .removedFavoritePrime(state.count)))
-
+            
+        case .counterView(.primeModal(.saveFavoritePrimeTapped)):
+            state.activityFeed.append(.init(timestamp: Date(), type: .addedFavoritePrime(state.count)))
+            
         case let .favoritePrimes(.deleteFavoritePrimes(indexSet)):
             for index in indexSet {
-                state.activityFeed.append(.init(timestamp: Date(), type: .addedFavoritePrime(state.favoritePrimes[index])))
+                state.activityFeed.append(.init(timestamp: Date(), type: .removedFavoritePrime(state.favoritePrimes[index])))
             }
         }
         
-        reducer(&state, action)
+        return reducer(&state, action)
     }
 }

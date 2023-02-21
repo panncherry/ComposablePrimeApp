@@ -6,12 +6,17 @@
 //
 import SwiftUI
 import Overture
+import Counter
 import PrimeModal
 import FavoritePrimes
 import StoreArchitecture
 
 struct IsPrimeModalView: View {
-    @ObservedObject var store: Store<PrimeModalState, AppAction>
+    @ObservedObject var store: Store<PrimeModalState, PrimeModalAction>
+    
+    public init(store: Store<PrimeModalState, PrimeModalAction>) {
+        self.store = store
+    }
     
     var body: some View {
         VStack {
@@ -19,11 +24,11 @@ struct IsPrimeModalView: View {
                 Text("\(store.value.count) is prime 🎉")
                 
                 if store.value.favoritePrimes.contains(store.value.count) {
-                    Button { store.send(.primeModal(.removeFavoritePrimeTapped))} label: {
+                    Button { self.store.send(.removeFavoritePrimeTapped) } label: {
                         Text("Remove from favorite primes")
                     }
                 } else {
-                    Button { store.send(.primeModal(.saveFavoritePrimeTapped)) } label: {
+                    Button { store.send(.saveFavoritePrimeTapped) } label: {
                         Text("Save to favorite primes")
                     }
                 }
@@ -50,8 +55,9 @@ struct IsPrimeModalView: View {
 
 struct IsPrimeModalView_Previews: PreviewProvider {
     static var previews: some View {
-        EmptyView()
-//        IsPrimeModalView(store: Store(value: PrimeModalState(count: 0, favoritePrimes: []),
-//                                      reducer: with(appReducer, compose(logging, activityFeed))))
+        IsPrimeModalView(
+            store: Store<PrimeModalState, PrimeModalAction>(
+                value: (2, [2, 3, 5]),
+                reducer: primeModalReducer))
     }
 }

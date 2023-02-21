@@ -6,13 +6,15 @@
 //
 import Combine
 import SwiftUI
-import PrimeModal
+import Counter
 
 struct AppState {
     var count: Int = 0
     var favoritePrimes: [Int] = []
     var loggedInUser: User? = nil
     var activityFeed: [Activity] = []
+    var alertNthPrime: PrimeAlert? = nil
+    var isNthPrimeButtonDisabled: Bool = false
 
     struct Activity {
       let timestamp: Date
@@ -32,16 +34,20 @@ struct AppState {
 }
 
 extension AppState {
-    var primeModal: PrimeModalState {
+    var counterView: CounterViewState {
         get {
-            PrimeModalState(
-                count: count,
-                favoritePrimes: favoritePrimes
+            CounterViewState(
+                alertNthPrime: self.alertNthPrime,
+                count: self.count,
+                favoritePrimes: self.favoritePrimes,
+                isNthPrimeButtonDisabled: self.isNthPrimeButtonDisabled
             )
         }
         set {
+            alertNthPrime = newValue.alertNthPrime
             count = newValue.count
             favoritePrimes = newValue.favoritePrimes
+            isNthPrimeButtonDisabled = newValue.isNthPrimeButtonDisabled
         }
     }
 }
