@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Counter
-import Overture
 import StoreArchitecture
 
 typealias CountPrimeState = (count: Int, favoritePrimes: [Int])
@@ -93,8 +92,6 @@ struct CounterView: View {
 
 struct CounterView_Previews: PreviewProvider {
     static var previews: some View {
-        EmptyView()
+        CounterView(store: Store(value: CounterViewState(alertNthPrime: nil, count: 0, favoritePrimes: [], isNthPrimeButtonDisabled: false), reducer: counterViewReducer))
     }
-    //        CounterView(store: Store(value: CountPrimeState(count: 0, favoritePrimes: []),
-    //                                 reducer: with(appReducer, compose(logging, activityFeed))))}
 }

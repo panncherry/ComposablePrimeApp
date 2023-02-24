@@ -5,7 +5,6 @@
 //  Created by Pann Cherry on 1/29/23.
 //
 import SwiftUI
-import Overture
 import FavoritePrimes
 import StoreArchitecture
 
@@ -41,8 +40,8 @@ public struct FavoritePrimesView: View {
 
 struct FavoritePrimesView_Previews: PreviewProvider {
     static var previews: some View {
-        EmptyView()
-        //        FavoritePrimesView(store: Store(value: [],
-        //                                        reducer: with(appReducer, compose(logging, activityFeed))))
+        FavoritePrimesView(store: Store(value: [2,3,5,7],
+                                        reducer: favoritePrimesReducer))
+        
     }
 }

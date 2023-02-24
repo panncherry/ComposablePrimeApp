@@ -5,7 +5,6 @@
 //  Created by Pann Cherry on 1/28/23.
 //
 import SwiftUI
-import Overture
 import Counter
 import PrimeModal
 import FavoritePrimes
@@ -50,7 +49,6 @@ struct IsPrimeModalView: View {
         }
         return true
     }
-    
 }
 
 struct IsPrimeModalView_Previews: PreviewProvider {

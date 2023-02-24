@@ -25,9 +25,9 @@ public func primeModalReducer(state: inout PrimeModalState, action: PrimeModalAc
     }
 }
 
-public enum PrimeModalAction {
-    case saveFavoritePrimeTapped
-    case removeFavoritePrimeTapped
+public enum PrimeModalAction: Equatable {
+  case saveFavoritePrimeTapped
+  case removeFavoritePrimeTapped
 }
 
 public typealias PrimeModalState = (count: Int, favoritePrimes: [Int])
